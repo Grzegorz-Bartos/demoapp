@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Upload tekstu{% endblock %}
+{% block content %}
+<div class="card">
+<h2>Prześlij plik .txt</h2>
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<p>{{ form.file.label_tag }}<br>{{ form.file }}</p>
+{% if form.errors %}<div style="color:#b00020">{{ form.errors }}</div>{% endif %}
+<p><button class="btn" type="submit">Prześlij i przetwórz</button></p>
+</form>
+</div>
+{% endblock %}

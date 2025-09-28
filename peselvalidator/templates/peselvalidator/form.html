@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Walidator PESEL{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>Walidator PESEL</h2>
+  <form method="post">
+    {% csrf_token %}
+    <p>{{ form.pesel.label_tag }}<br>{{ form.pesel }}</p>
+    {% if form.errors %}
+      <div style="color:#b00020">{{ form.errors }}</div>
+    {% endif %}
+    <p><button class="btn" type="submit">Sprawdź</button></p>
+  </form>
+
+  {% if info is not None %}
+    {% if info.valid %}
+      <p><strong>PESEL poprawny.</strong></p>
+      <ul>
+        <li>Data urodzenia: {{ info.birth_date|date:'Y-m-d' }}</li>
+        <li>Płeć: {{ info.gender }}</li>
+      </ul>
+    {% else %}
+      <p><strong>PESEL niepoprawny:</strong> {{ info.error }}</p>
+    {% endif %}
+  {% endif %}
+</div>
+{% endblock %}
