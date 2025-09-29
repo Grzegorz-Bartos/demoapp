@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from datetime import date
 from typing import Optional
 
-# Wagi do sumy kontrolnej
 WEIGHTS = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3]
 
 
@@ -10,7 +9,7 @@ WEIGHTS = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3]
 class PeselInfo:
     valid: bool
     birth_date: Optional[date] = None
-    gender: Optional[str] = None  # 'K' lub 'M'
+    gender: Optional[str] = None
     error: Optional[str] = None
 
 
@@ -19,7 +18,6 @@ def _decode_birth_date(pesel: str) -> Optional[date]:
     mm = int(pesel[2:4])
     dd = int(pesel[4:6])
 
-    # Wg specyfikacji PESEL (wieki)
     if 1 <= mm <= 12:
         century = 1900
     elif 21 <= mm <= 32:
