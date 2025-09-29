@@ -1,8 +1,16 @@
 from dataclasses import dataclass
 from datetime import date
-from typing import Optional
+from typing import Optional, Tuple
 
 WEIGHTS = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3]
+
+CENTURY_OFFSETS: dict[Tuple[int, int], Tuple[int, int]] = {
+    (1, 12): (1900, 0),
+    (21, 32): (2000, 20),
+    (81, 92): (1800, 80),
+    (41, 52): (2100, 40),
+    (61, 72): (2200, 60),
+}
 
 
 @dataclass
@@ -18,28 +26,15 @@ def _decode_birth_date(pesel: str) -> Optional[date]:
     mm = int(pesel[2:4])
     dd = int(pesel[4:6])
 
-    if 1 <= mm <= 12:
-        century = 1900
-    elif 21 <= mm <= 32:
-        century = 2000
-        mm -= 20
-    elif 81 <= mm <= 92:
-        century = 1800
-        mm -= 80
-    elif 41 <= mm <= 52:
-        century = 2100
-        mm -= 40
-    elif 61 <= mm <= 72:
-        century = 2200
-        mm -= 60
-    else:
-        return None
-
-    year = century + yy
-    try:
-        return date(year, mm, dd)
-    except ValueError:
-        return None
+    for (lo, hi), (century, offset) in CENTURY_OFFSETS.items():
+        if lo <= mm <= hi:
+            year = century + yy
+            month = mm - offset
+            try:
+                return date(year, month, dd)
+            except ValueError:
+                return None
+    return None
 
 
 def _checksum_ok(pesel: str) -> bool:
