@@ -29,6 +29,6 @@
 4. Wykonaj migracje i uruchom serwer:
 
     ```bash
-    python manage.py migrate
-    python manage.py runserver
+    python src/manage.py migrate
+    python src/manage.py runserver
     ```
